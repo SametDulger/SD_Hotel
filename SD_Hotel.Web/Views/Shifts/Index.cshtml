@@ -1,0 +1,119 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.ShiftDto>
+
+@{
+    ViewData["Title"] = ViewBag.Title ?? "Vardiyalar";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-clock me-2"></i>@ViewData["Title"]
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Vardiya Ekle
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <a asp-action="ActiveShifts" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-check-circle me-2"></i>Aktif Vardiyalar
+                                </a>
+                                <a asp-action="ByShiftType" asp-route-shiftType="Morning" class="btn btn-outline-info btn-sm">
+                                    <i class="fas fa-sun me-2"></i>Sabah Vardiyası
+                                </a>
+                                <a asp-action="ByShiftType" asp-route-shiftType="Evening" class="btn btn-outline-warning btn-sm">
+                                    <i class="fas fa-moon me-2"></i>Akşam Vardiyası
+                                </a>
+                                <a asp-action="ByShiftType" asp-route-shiftType="Night" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-star me-2"></i>Gece Vardiyası
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Any())
+                    {
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Personel</th>
+                                    <th>Tarih</th>
+                                    <th>Başlangıç</th>
+                                    <th>Bitiş</th>
+                                    <th>Süre</th>
+                                    <th>Vardiya Tipi</th>
+                                    <th>Durum</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var shift in Model)
+                                {
+                                    <tr>
+                                        <td>@shift.EmployeeName</td>
+                                        <td>@shift.ShiftDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@shift.StartTime.ToString(@"hh\:mm")</td>
+                                        <td>@shift.EndTime.ToString(@"hh\:mm")</td>
+                                        <td>@shift.HoursWorked saat</td>
+                                        <td>
+                                            @switch (shift.ShiftType)
+                                            {
+                                                case "Morning":
+                                                    <span class="badge badge-info">Sabah</span>
+                                                    break;
+                                                case "Evening":
+                                                    <span class="badge badge-warning">Akşam</span>
+                                                    break;
+                                                case "Night":
+                                                    <span class="badge badge-secondary">Gece</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge badge-secondary">@shift.ShiftType</span>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (shift.IsActive)
+                                            {
+                                                <span class="badge badge-success">Aktif</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-danger">Pasif</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@shift.Id" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@shift.Id" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@shift.Id" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Henüz vardiya kaydı bulunmuyor.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

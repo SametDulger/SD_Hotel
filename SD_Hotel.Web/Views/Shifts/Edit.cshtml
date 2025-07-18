@@ -1,0 +1,106 @@
+@model SD_Hotel.Application.DTOs.UpdateShiftDto
+
+@{
+    ViewData["Title"] = "Vardiya Düzenle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit me-2"></i>Vardiya Düzenle
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EmployeeId" class="control-label">Personel</label>
+                                    <select asp-for="EmployeeId" class="form-control">
+                                        <option value="">Personel Seçin</option>
+                                        @foreach (var employee in ViewBag.Employees)
+                                        {
+                                            <option value="@employee.Id">@employee.FirstName @employee.LastName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ShiftDate" class="control-label">Vardiya Tarihi</label>
+                                    <input asp-for="ShiftDate" class="form-control" type="date" />
+                                    <span asp-validation-for="ShiftDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StartTime" class="control-label">Başlangıç Saati</label>
+                                    <input asp-for="StartTime" class="form-control" type="time" />
+                                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EndTime" class="control-label">Bitiş Saati</label>
+                                    <input asp-for="EndTime" class="form-control" type="time" />
+                                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ShiftType" class="control-label">Vardiya Tipi</label>
+                                    <select asp-for="ShiftType" class="form-control">
+                                        <option value="">Vardiya Tipi Seçin</option>
+                                        <option value="Morning">Sabah (08:00-16:00)</option>
+                                        <option value="Evening">Akşam (16:00-00:00)</option>
+                                        <option value="Night">Gece (00:00-08:00)</option>
+                                    </select>
+                                    <span asp-validation-for="ShiftType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input asp-for="IsActive" class="form-check-input" />
+                                        <label asp-for="IsActive" class="form-check-label">Aktif</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

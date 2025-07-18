@@ -1,0 +1,122 @@
+@model SD_Hotel.Application.DTOs.UpdateReservationDto
+
+@{
+    ViewData["Title"] = "Rezervasyon Düzenle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Rezervasyon Düzenle</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CustomerId" class="control-label">Müşteri</label>
+                                    <select asp-for="CustomerId" class="form-control">
+                                        <option value="">Müşteri Seçiniz</option>
+                                        @foreach (var customer in ViewBag.Customers)
+                                        {
+                                            <option value="@customer.Id" selected="@(customer.Id == Model.CustomerId)">@customer.FirstName @customer.LastName - @customer.Email</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="RoomId" class="control-label">Oda</label>
+                                    <select asp-for="RoomId" class="form-control">
+                                        <option value="">Oda Seçiniz</option>
+                                        @foreach (var room in ViewBag.Rooms)
+                                        {
+                                            <option value="@room.Id" selected="@(room.Id == Model.RoomId)">@room.RoomNumber - @room.RoomType (@room.BasePrice.ToString("C"))</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="RoomId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CheckInDate" class="control-label">Giriş Tarihi</label>
+                                    <input asp-for="CheckInDate" class="form-control" type="date" />
+                                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CheckOutDate" class="control-label">Çıkış Tarihi</label>
+                                    <input asp-for="CheckOutDate" class="form-control" type="date" />
+                                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="NumberOfGuests" class="control-label">Kişi Sayısı</label>
+                                    <input asp-for="NumberOfGuests" class="form-control" type="number" min="1" />
+                                    <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PackageType" class="control-label">Paket Tipi</label>
+                                    <select asp-for="PackageType" class="form-control">
+                                        <option value="">Paket Seçiniz</option>
+                                        <option value="RoomOnly" selected="@(Model.PackageType == "RoomOnly")">Sadece Oda</option>
+                                        <option value="HalfBoard" selected="@(Model.PackageType == "HalfBoard")">Yarım Pansiyon</option>
+                                        <option value="FullBoard" selected="@(Model.PackageType == "FullBoard")">Tam Pansiyon</option>
+                                        <option value="AllInclusive" selected="@(Model.PackageType == "AllInclusive")">Her Şey Dahil</option>
+                                    </select>
+                                    <span asp-validation-for="PackageType" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TotalPrice" class="control-label">Toplam Fiyat</label>
+                                    <input asp-for="TotalPrice" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="TotalPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Status" class="control-label">Durum</label>
+                                    <select asp-for="Status" class="form-control">
+                                        <option value="Pending" selected="@(Model.Status == "Pending")">Beklemede</option>
+                                        <option value="Confirmed" selected="@(Model.Status == "Confirmed")">Onaylandı</option>
+                                        <option value="Cancelled" selected="@(Model.Status == "Cancelled")">İptal Edildi</option>
+                                        <option value="Completed" selected="@(Model.Status == "Completed")">Tamamlandı</option>
+                                    </select>
+                                    <span asp-validation-for="Status" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SpecialRequests" class="control-label">Özel İstekler</label>
+                            <textarea asp-for="SpecialRequests" class="form-control" rows="3" placeholder="Varsa özel isteklerinizi yazınız..."></textarea>
+                            <span asp-validation-for="SpecialRequests" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Güncelle</button>
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

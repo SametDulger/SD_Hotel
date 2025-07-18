@@ -1,0 +1,98 @@
+@model SD_Hotel.Application.DTOs.ReservationDto
+
+@{
+    ViewData["Title"] = "Rezervasyon Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Rezervasyon Detayları</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Rezervasyon No</dt>
+                        <dd class="col-sm-9">#@Model.Id</dd>
+
+                        <dt class="col-sm-3">Müşteri</dt>
+                        <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                        <dt class="col-sm-3">Oda</dt>
+                        <dd class="col-sm-9">@Model.RoomNumber</dd>
+
+                        <dt class="col-sm-3">Giriş Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CheckInDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Çıkış Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CheckOutDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Kişi Sayısı</dt>
+                        <dd class="col-sm-9">@Model.NumberOfGuests</dd>
+
+                        <dt class="col-sm-3">Paket Tipi</dt>
+                        <dd class="col-sm-9">@Model.PackageType</dd>
+
+                        <dt class="col-sm-3">Toplam Fiyat</dt>
+                        <dd class="col-sm-9">@Model.TotalPrice.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Status)
+                            {
+                                case "Confirmed":
+                                    <span class="badge badge-success">Onaylandı</span>
+                                    break;
+                                case "Pending":
+                                    <span class="badge badge-warning">Beklemede</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge badge-danger">İptal Edildi</span>
+                                    break;
+                                case "Completed":
+                                    <span class="badge badge-info">Tamamlandı</span>
+                                    break;
+                                default:
+                                    <span class="badge badge-secondary">@Model.Status</span>
+                                    break;
+                            }
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.SpecialRequests))
+                        {
+                            <dt class="col-sm-3">Özel İstekler</dt>
+                            <dd class="col-sm-9">@Model.SpecialRequests</dd>
+                        }
+
+                        @if (Model.ConfirmationDate.HasValue)
+                        {
+                            <dt class="col-sm-3">Onay Tarihi</dt>
+                            <dd class="col-sm-9">@Model.ConfirmationDate.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+
+                        @if (Model.IsEarlyReservation)
+                        {
+                            <dt class="col-sm-3">Erken Rezervasyon</dt>
+                            <dd class="col-sm-9">
+                                <span class="badge badge-info">Evet</span>
+                                @if (Model.EarlyReservationDiscount.HasValue)
+                                {
+                                    <span class="text-success">(@Model.EarlyReservationDiscount.Value.ToString("C") indirim)</span>
+                                }
+                            </dd>
+                        }
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Geri Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

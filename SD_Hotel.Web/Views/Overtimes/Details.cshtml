@@ -1,0 +1,125 @@
+@model SD_Hotel.Application.DTOs.OvertimeDto
+
+@{
+    ViewData["Title"] = "Mesai Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-eye me-2"></i>Mesai Detayları
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Personel:</dt>
+                                <dd class="col-sm-8">@Model.EmployeeName</dd>
+
+                                <dt class="col-sm-4">Mesai Tarihi:</dt>
+                                <dd class="col-sm-8">@Model.OvertimeDate.ToString("dd/MM/yyyy")</dd>
+
+                                <dt class="col-sm-4">Başlangıç Saati:</dt>
+                                <dd class="col-sm-8">@Model.StartTime.ToString(@"hh\:mm")</dd>
+
+                                <dt class="col-sm-4">Bitiş Saati:</dt>
+                                <dd class="col-sm-8">@Model.EndTime.ToString(@"hh\:mm")</dd>
+
+                                <dt class="col-sm-4">Çalışma Süresi:</dt>
+                                <dd class="col-sm-8">@Model.HoursWorked saat</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Saat Ücreti:</dt>
+                                <dd class="col-sm-8">@Model.HourlyRate.ToString("C")</dd>
+
+                                <dt class="col-sm-4">Toplam Ücret:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge badge-success">@Model.TotalPay.ToString("C")</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Onay Durumu:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsApproved)
+                                    {
+                                        <span class="badge badge-success">Onaylandı</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning">Onay Bekliyor</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Durum:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Oluşturulma Tarihi:</dt>
+                                <dd class="col-sm-8">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                                @if (Model.UpdatedDate.HasValue)
+                                {
+                                    <dt class="col-sm-4">Güncellenme Tarihi:</dt>
+                                    <dd class="col-sm-8">@Model.UpdatedDate.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Reason))
+                    {
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="card-title">Mesai Nedeni</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>@Model.Reason</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="btn-group">
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                    <i class="fas fa-edit me-2"></i>Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Sil
+                                </a>
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-list me-2"></i>Listeye Dön
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,113 @@
+@model SD_Hotel.Application.DTOs.CreateEmployeeDto
+
+@{
+    ViewData["Title"] = "Yeni Personel Ekle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Yeni Personel Ekle</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="FirstName" class="control-label">Ad</label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="LastName" class="control-label">Soyad</label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label">E-posta</label>
+                                    <input asp-for="Email" class="form-control" type="email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Phone" class="control-label">Telefon</label>
+                                    <input asp-for="Phone" class="form-control" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IdentityNumber" class="control-label">TC Kimlik No</label>
+                                    <input asp-for="IdentityNumber" class="form-control" />
+                                    <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Role" class="control-label">Pozisyon</label>
+                                    <select asp-for="Role" class="form-control">
+                                        <option value="">Pozisyon Seçiniz</option>
+                                        <option value="Receptionist">Resepsiyon</option>
+                                        <option value="Housekeeper">Temizlik Görevlisi</option>
+                                        <option value="Chef">Aşçı</option>
+                                        <option value="Waiter">Garson</option>
+                                        <option value="Manager">Müdür</option>
+                                        <option value="Security">Güvenlik</option>
+                                        <option value="Maintenance">Teknik Servis</option>
+                                    </select>
+                                    <span asp-validation-for="Role" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address" class="control-label">Adres</label>
+                            <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="HourlyRate" class="control-label">Saatlik Ücret</label>
+                                    <input asp-for="HourlyRate" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="MonthlySalary" class="control-label">Aylık Maaş (Opsiyonel)</label>
+                                    <input asp-for="MonthlySalary" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="MonthlySalary" class="text-danger"></span>
+                                    <small class="form-text text-muted">Aylık maaş girilirse saatlik ücret kullanılmaz</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="HireDate" class="control-label">İşe Başlama Tarihi</label>
+                            <input asp-for="HireDate" class="form-control" type="date" />
+                            <span asp-validation-for="HireDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

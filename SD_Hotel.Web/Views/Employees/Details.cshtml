@@ -1,0 +1,73 @@
+@model SD_Hotel.Application.DTOs.EmployeeDto
+
+@{
+    ViewData["Title"] = "Personel Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Personel Detayları</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Ad Soyad</dt>
+                        <dd class="col-sm-9">@Model.FirstName @Model.LastName</dd>
+
+                        <dt class="col-sm-3">E-posta</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+
+                        <dt class="col-sm-3">Telefon</dt>
+                        <dd class="col-sm-9">@Model.Phone</dd>
+
+                        <dt class="col-sm-3">TC Kimlik No</dt>
+                        <dd class="col-sm-9">@Model.IdentityNumber</dd>
+
+                        <dt class="col-sm-3">Pozisyon</dt>
+                        <dd class="col-sm-9">@Model.Role</dd>
+
+                        <dt class="col-sm-3">Adres</dt>
+                        <dd class="col-sm-9">@Model.Address</dd>
+
+                        <dt class="col-sm-3">Ücret</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.MonthlySalary.HasValue && Model.MonthlySalary > 0)
+                            {
+                                <span>@Model.MonthlySalary.Value.ToString("C")/ay</span>
+                            }
+                            else
+                            {
+                                <span>@Model.HourlyRate.ToString("C")/saat</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">İşe Başlama Tarihi</dt>
+                        <dd class="col-sm-9">@Model.HireDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge badge-success">Aktif</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Pasif</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Geri Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

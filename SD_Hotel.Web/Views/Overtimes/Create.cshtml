@@ -1,0 +1,92 @@
+@model SD_Hotel.Application.DTOs.CreateOvertimeDto
+
+@{
+    ViewData["Title"] = "Yeni Mesai Ekle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-plus me-2"></i>Yeni Mesai Ekle
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EmployeeId" class="control-label">Personel</label>
+                                    <select asp-for="EmployeeId" class="form-control">
+                                        <option value="">Personel Seçin</option>
+                                        @foreach (var employee in ViewBag.Employees)
+                                        {
+                                            <option value="@employee.Id">@employee.FirstName @employee.LastName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="OvertimeDate" class="control-label">Mesai Tarihi</label>
+                                    <input asp-for="OvertimeDate" class="form-control" type="date" />
+                                    <span asp-validation-for="OvertimeDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="StartTime" class="control-label">Başlangıç Saati</label>
+                                    <input asp-for="StartTime" class="form-control" type="time" />
+                                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="EndTime" class="control-label">Bitiş Saati</label>
+                                    <input asp-for="EndTime" class="form-control" type="time" />
+                                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Reason" class="control-label">Mesai Nedeni</label>
+                                    <textarea asp-for="Reason" class="form-control" rows="3" placeholder="Mesai yapılma nedenini açıklayın..."></textarea>
+                                    <span asp-validation-for="Reason" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>İptal
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

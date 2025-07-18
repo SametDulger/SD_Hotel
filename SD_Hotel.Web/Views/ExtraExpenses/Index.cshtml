@@ -1,0 +1,106 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.ExtraExpenseDto>
+
+@{
+    ViewData["Title"] = "Ek Giderler";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ek Gider Listesi</h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Gider Ekle
+                        </a>
+                        <a asp-action="Total" class="btn btn-info">
+                            <i class="fas fa-calculator"></i> Toplam Gider
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <form asp-action="ByDateRange" method="get" class="form-inline">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Başlangıç Tarihi:</label>
+                                        <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate?.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label">Bitiş Tarihi:</label>
+                                        <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate?.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-outline-secondary mt-4">
+                                            <i class="fas fa-search"></i> Tarih Aralığı Ara
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <a asp-action="ByType" asp-route-expenseType="Bar" class="btn btn-outline-info btn-sm">Bar</a>
+                                <a asp-action="ByType" asp-route-expenseType="RoomService" class="btn btn-outline-info btn-sm">Oda Servisi</a>
+                                <a asp-action="ByType" asp-route-expenseType="Spa" class="btn btn-outline-info btn-sm">Spa</a>
+                                <a asp-action="ByType" asp-route-expenseType="Restaurant" class="btn btn-outline-info btn-sm">Restoran</a>
+                                <a asp-action="ByType" asp-route-expenseType="Laundry" class="btn btn-outline-info btn-sm">Çamaşırhane</a>
+                                <a asp-action="ByType" asp-route-expenseType="Other" class="btn btn-outline-info btn-sm">Diğer</a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Açıklama</th>
+                                <th>Tutar</th>
+                                <th>Tip</th>
+                                <th>Tarih</th>
+                                <th>Ödendi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Description</td>
+                                    <td>@item.Amount.ToString("C")</td>
+                                    <td>
+                                        <span class="badge badge-info">@item.ExpenseType</span>
+                                    </td>
+                                    <td>@item.ExpenseDate.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.IsPaid)
+                                        {
+                                            <span class="badge badge-success">Evet</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-warning">Hayır</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
