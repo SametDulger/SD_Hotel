@@ -1,0 +1,79 @@
+@model SD_Hotel.Application.DTOs.ExtraExpenseDto
+
+@{
+    ViewData["Title"] = "Ek Gider Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ek Gider Detayları</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Gider No</dt>
+                        <dd class="col-sm-9">#@Model.Id</dd>
+
+                        <dt class="col-sm-3">Açıklama</dt>
+                        <dd class="col-sm-9">@Model.Description</dd>
+
+                        <dt class="col-sm-3">Tutar</dt>
+                        <dd class="col-sm-9">@Model.Amount.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Gider Tipi</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge badge-info">@Model.ExpenseType</span>
+                        </dd>
+
+                        <dt class="col-sm-3">Gider Tarihi</dt>
+                        <dd class="col-sm-9">@Model.ExpenseDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Müşteri ID</dt>
+                        <dd class="col-sm-9">@Model.CustomerId</dd>
+
+                        @if (Model.ReservationId.HasValue)
+                        {
+                            <dt class="col-sm-3">Rezervasyon ID</dt>
+                            <dd class="col-sm-9">@Model.ReservationId</dd>
+                        }
+
+                        <dt class="col-sm-3">Ödendi</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsPaid)
+                            {
+                                <span class="badge badge-success">Evet</span>
+                                @if (Model.PaymentDate.HasValue)
+                                {
+                                    <span class="text-muted">(@Model.PaymentDate.Value.ToString("dd/MM/yyyy"))</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">Hayır</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Oluşturulma Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        @if (Model.UpdatedDate.HasValue)
+                        {
+                            <dt class="col-sm-3">Güncellenme Tarihi</dt>
+                            <dd class="col-sm-9">@Model.UpdatedDate.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                        }
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Düzenle
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Geri Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

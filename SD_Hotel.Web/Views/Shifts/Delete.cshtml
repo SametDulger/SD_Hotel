@@ -1,0 +1,95 @@
+@model SD_Hotel.Application.DTOs.ShiftDto
+
+@{
+    ViewData["Title"] = "Vardiya Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-trash me-2"></i>Vardiya Sil
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Bu vardiya kaydını silmek istediğinizden emin misiniz?
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Personel:</dt>
+                                <dd class="col-sm-8">@Model.EmployeeName</dd>
+
+                                <dt class="col-sm-4">Vardiya Tarihi:</dt>
+                                <dd class="col-sm-8">@Model.ShiftDate.ToString("dd/MM/yyyy")</dd>
+
+                                <dt class="col-sm-4">Başlangıç Saati:</dt>
+                                <dd class="col-sm-8">@Model.StartTime.ToString(@"hh\:mm")</dd>
+
+                                <dt class="col-sm-4">Bitiş Saati:</dt>
+                                <dd class="col-sm-8">@Model.EndTime.ToString(@"hh\:mm")</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Çalışma Süresi:</dt>
+                                <dd class="col-sm-8">@Model.HoursWorked saat</dd>
+
+                                <dt class="col-sm-4">Vardiya Tipi:</dt>
+                                <dd class="col-sm-8">
+                                    @switch (Model.ShiftType)
+                                    {
+                                        case "Morning":
+                                            <span class="badge badge-info">Sabah</span>
+                                            break;
+                                        case "Evening":
+                                            <span class="badge badge-warning">Akşam</span>
+                                            break;
+                                        case "Night":
+                                            <span class="badge badge-secondary">Gece</span>
+                                            break;
+                                        default:
+                                            <span class="badge badge-secondary">@Model.ShiftType</span>
+                                            break;
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Durum:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" class="mt-3">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>İptal
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

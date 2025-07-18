@@ -1,0 +1,413 @@
+﻿@model DashboardViewModel
+@{
+    ViewData["Title"] = "SD Hotel - Ana Sayfa";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="hero-section text-white border-0 shadow-lg">
+                <div class="hero-overlay"></div>
+                <div class="hero-content p-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="display-4 fw-bold mb-3 animate-fade-in">
+                                <i class="fas fa-hotel me-3"></i>SD Hotel Yönetim Sistemi
+                            </h1>
+                            <p class="lead mb-4 animate-fade-in-delay">Profesyonel otel yönetimi için geliştirilmiş modern web tabanlı sistem</p>
+                            <div class="d-flex gap-3 animate-fade-in-delay-2">
+                                <a asp-controller="Rooms" asp-action="AvailableRooms" class="btn btn-light btn-lg pulse-animation">
+                                    <i class="fas fa-search me-2"></i>Oda Ara
+                                </a>
+                                <a asp-controller="Reservations" asp-action="Create" class="btn btn-outline-light btn-lg">
+                                    <i class="fas fa-plus me-2"></i>Rezervasyon
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="hero-icon animate-bounce">
+                                <i class="fas fa-hotel fa-8x opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card border-left-primary shadow h-100 py-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Toplam Oda
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 counter" data-target="@Model.TotalRooms">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-bed fa-2x text-gray-300 stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="Rooms" asp-action="Index" class="text-decoration-none">
+                        <small class="text-primary">Detayları Gör <i class="fas fa-arrow-right ms-1"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card border-left-success shadow h-100 py-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Aktif Rezervasyon
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 counter" data-target="@Model.ActiveReservations">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-check fa-2x text-gray-300 stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="Reservations" asp-action="Index" class="text-decoration-none">
+                        <small class="text-success">Detayları Gör <i class="fas fa-arrow-right ms-1"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card border-left-info shadow h-100 py-2" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Toplam Müşteri
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 counter" data-target="@Model.TotalCustomers">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300 stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="Customers" asp-action="Index" class="text-decoration-none">
+                        <small class="text-info">Detayları Gör <i class="fas fa-arrow-right ms-1"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="stat-card border-left-warning shadow h-100 py-2" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Aktif Personel
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 counter" data-target="@Model.ActiveEmployees">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-tie fa-2x text-gray-300 stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a asp-controller="Employees" asp-action="Index" class="text-decoration-none">
+                        <small class="text-warning">Detayları Gör <i class="fas fa-arrow-right ms-1"></i></small>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow mb-4" data-aos="fade-right">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-bolt me-2"></i>Hızlı İşlemler
+                    </h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="refreshQuickActions()"><i class="fas fa-sync-alt me-2"></i>Yenile</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="customizeQuickActions()"><i class="fas fa-edit me-2"></i>Özelleştir</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="list-group list-group-flush">
+                                <a asp-controller="Rooms" asp-action="AvailableRooms" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-search text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Müsait Odaları Ara</h6>
+                                        <small class="text-muted">Tarih aralığına göre müsait odaları bulun</small>
+                                    </div>
+                                </a>
+                                <a asp-controller="Reservations" asp-action="Create" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-plus text-success me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Yeni Rezervasyon</h6>
+                                        <small class="text-muted">Müşteri için yeni rezervasyon oluşturun</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="list-group list-group-flush">
+                                <a asp-controller="Customers" asp-action="Create" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-user-plus text-info me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Yeni Müşteri Ekle</h6>
+                                        <small class="text-muted">Sisteme yeni müşteri kaydı ekleyin</small>
+                                    </div>
+                                </a>
+                                <a asp-controller="Shifts" asp-action="Index" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-clock text-info me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Vardiya Yönetimi</h6>
+                                        <small class="text-muted">Personel vardiyalarını yönetin</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="list-group list-group-flush">
+                                <a asp-controller="ExtraExpenses" asp-action="Create" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-money-bill-wave text-warning me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Ek Gider Ekle</h6>
+                                        <small class="text-muted">Yeni ek gider kaydı oluşturun</small>
+                                    </div>
+                                </a>
+                                <a asp-controller="Overtimes" asp-action="Index" class="list-group-item list-group-item-action d-flex align-items-center quick-action-item">
+                                    <i class="fas fa-hourglass-half text-danger me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Mesai Yönetimi</h6>
+                                        <small class="text-muted">Personel mesai kayıtlarını yönetin</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4" data-aos="fade-up">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-clock me-2"></i>Son Aktiviteler
+                    </h6>
+                    <button class="btn btn-sm btn-outline-primary" onclick="loadRecentActivities()">
+                        <i class="fas fa-sync-alt"></i> Yenile
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="timeline" id="recentActivities">
+                        @if (Model.RecentActivities.Any())
+                        {
+                            @foreach (var activity in Model.RecentActivities)
+                            {
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-@activity.Type"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="timeline-title">@activity.Title</h6>
+                                        <p class="timeline-text">@activity.Description</p>
+                                        <small class="text-muted">@activity.TimeAgo</small>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-primary"></div>
+                                <div class="timeline-content">
+                                    <h6 class="timeline-title">Sistem Başlatıldı</h6>
+                                    <p class="timeline-text">SD Hotel yönetim sistemi başarıyla başlatıldı</p>
+                                    <small class="text-muted">Az önce</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather Widget -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4" data-aos="fade-up">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-cloud-sun me-2"></i>Hava Durumu - İstanbul
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <div class="weather-item">
+                                <i class="fas fa-sun fa-3x text-warning mb-2"></i>
+                                <h4>22°C</h4>
+                                <p class="text-muted">Güneşli</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="weather-item">
+                                <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                                <h5>65%</h5>
+                                <p class="text-muted">Nem</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="weather-item">
+                                <i class="fas fa-wind fa-2x text-secondary mb-2"></i>
+                                <h5>12 km/h</h5>
+                                <p class="text-muted">Rüzgar</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="weather-item">
+                                <i class="fas fa-eye fa-2x text-success mb-2"></i>
+                                <h5>10 km</h5>
+                                <p class="text-muted">Görüş</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Counter Animation
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 30);
+}
+
+// Initialize counters when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        animateCounter(counter, target);
+    });
+});
+
+// Refresh Quick Actions
+function refreshQuickActions() {
+    const quickActions = document.querySelector('.card-body');
+    quickActions.classList.add('loading');
+    
+    setTimeout(() => {
+        quickActions.classList.remove('loading');
+        showNotification('Hızlı işlemler yenilendi', 'success');
+    }, 1000);
+}
+
+// Customize Quick Actions
+function customizeQuickActions() {
+    showNotification('Bu özellik yakında eklenecek', 'info');
+}
+
+// Load Recent Activities
+function loadRecentActivities() {
+    const activitiesContainer = document.getElementById('recentActivities');
+    activitiesContainer.classList.add('loading');
+    
+    setTimeout(() => {
+        activitiesContainer.classList.remove('loading');
+        showNotification('Aktiviteler yenilendi', 'success');
+    }, 1000);
+}
+
+// Show Notification
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Add smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add intersection observer for animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe all cards for animation
+document.querySelectorAll('.card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+});
+</script>

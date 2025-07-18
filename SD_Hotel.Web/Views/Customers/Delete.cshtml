@@ -1,0 +1,66 @@
+@model SD_Hotel.Application.DTOs.CustomerDto
+
+@{
+    ViewData["Title"] = "Müşteri Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Müşteri Silme Onayı
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Dikkat!</h5>
+                        <p>Bu müşteriyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Ad Soyad:</dt>
+                                <dd class="col-sm-8">@Model.FirstName @Model.LastName</dd>
+
+                                <dt class="col-sm-4">E-posta:</dt>
+                                <dd class="col-sm-8">@Model.Email</dd>
+
+                                <dt class="col-sm-4">Telefon:</dt>
+                                <dd class="col-sm-8">@Model.Phone</dd>
+
+                                <dt class="col-sm-4">TC Kimlik No:</dt>
+                                <dd class="col-sm-8">@Model.IdentityNumber</dd>
+
+                                <dt class="col-sm-4">Sadakat Üyesi:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsLoyaltyMember)
+                                    {
+                                        <span class="badge bg-success text-white">Evet (@Model.LoyaltyPoints puan)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary text-white">Hayır</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> İptal
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

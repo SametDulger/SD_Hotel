@@ -1,0 +1,73 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.CustomerDto>
+
+@{
+    ViewData["Title"] = "Sadakat Üyeleri";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-crown me-2"></i>Sadakat Üyeleri
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Müşteri Ekle
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Tüm Müşteriler
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="row">
+                            @foreach (var customer in Model)
+                            {
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 border-success">
+                                        <div class="card-header bg-success text-white">
+                                            <h5 class="card-title mb-0">
+                                                <i class="fas fa-crown me-2"></i>@customer.FirstName @customer.LastName
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                <strong>E-posta:</strong> @customer.Email<br>
+                                                <strong>Telefon:</strong> @customer.Phone<br>
+                                                <strong>Kimlik No:</strong> @customer.IdentityNumber<br>
+                                                <strong>Doğum Tarihi:</strong> @(customer.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Belirtilmemiş")<br>
+                                                <strong>Adres:</strong> @customer.Address
+                                            </p>
+                                            <div class="mb-2">
+                                                <span class="badge bg-success text-white">Sadakat Üyesi</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a asp-action="Details" asp-route-id="@customer.Id" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i> Detay
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@customer.Id" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Düzenle
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Henüz sadakat üyesi bulunmuyor.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

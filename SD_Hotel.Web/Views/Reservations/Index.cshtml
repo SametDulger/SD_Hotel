@@ -1,0 +1,84 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.ReservationDto>
+
+@{
+    ViewData["Title"] = "Rezervasyonlar";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Rezervasyon Listesi</h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Rezervasyon
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Müşteri</th>
+                                <th>Oda</th>
+                                <th>Giriş Tarihi</th>
+                                <th>Çıkış Tarihi</th>
+                                <th>Kişi Sayısı</th>
+                                <th>Toplam Fiyat</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.CustomerName</td>
+                                    <td>@item.RoomNumber</td>
+                                    <td>@item.CheckInDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.CheckOutDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.NumberOfGuests</td>
+                                    <td>@item.TotalPrice.ToString("C")</td>
+                                    <td>
+                                        @switch (item.Status?.ToLower())
+                                        {
+                                            case "onaylandı":
+                                                <span class="badge bg-success text-white">Onaylandı</span>
+                                                break;
+                                            case "beklemede":
+                                                <span class="badge bg-warning text-dark">Beklemede</span>
+                                                break;
+                                            case "iptal edildi":
+                                                <span class="badge bg-danger text-white">İptal Edildi</span>
+                                                break;
+                                            case "tamamlandı":
+                                                <span class="badge bg-info text-white">Tamamlandı</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary text-white">@item.Status</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

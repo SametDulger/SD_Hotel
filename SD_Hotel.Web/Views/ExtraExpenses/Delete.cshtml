@@ -1,0 +1,66 @@
+@model SD_Hotel.Application.DTOs.ExtraExpenseDto
+
+@{
+    ViewData["Title"] = "Ek Gider Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ek Gider Sil</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h4>Bu ek gideri silmek istediğinizden emin misiniz?</h4>
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-3">Gider No</dt>
+                        <dd class="col-sm-9">#@Model.Id</dd>
+
+                        <dt class="col-sm-3">Açıklama</dt>
+                        <dd class="col-sm-9">@Model.Description</dd>
+
+                        <dt class="col-sm-3">Tutar</dt>
+                        <dd class="col-sm-9">@Model.Amount.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Gider Tipi</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge badge-info">@Model.ExpenseType</span>
+                        </dd>
+
+                        <dt class="col-sm-3">Gider Tarihi</dt>
+                        <dd class="col-sm-9">@Model.ExpenseDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Müşteri ID</dt>
+                        <dd class="col-sm-9">@Model.CustomerId</dd>
+
+                        <dt class="col-sm-3">Ödendi</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsPaid)
+                            {
+                                <span class="badge badge-success">Evet</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">Hayır</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> İptal
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

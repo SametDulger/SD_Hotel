@@ -1,0 +1,80 @@
+@model SD_Hotel.Application.DTOs.ReservationDto
+
+@{
+    ViewData["Title"] = "Rezervasyon Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Rezervasyon Sil</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h4>Bu rezervasyonu silmek istediğinizden emin misiniz?</h4>
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-3">Rezervasyon No</dt>
+                        <dd class="col-sm-9">#@Model.Id</dd>
+
+                        <dt class="col-sm-3">Müşteri</dt>
+                        <dd class="col-sm-9">@Model.CustomerName</dd>
+
+                        <dt class="col-sm-3">Oda</dt>
+                        <dd class="col-sm-9">@Model.RoomNumber</dd>
+
+                        <dt class="col-sm-3">Giriş Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CheckInDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Çıkış Tarihi</dt>
+                        <dd class="col-sm-9">@Model.CheckOutDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-3">Kişi Sayısı</dt>
+                        <dd class="col-sm-9">@Model.NumberOfGuests</dd>
+
+                        <dt class="col-sm-3">Paket Tipi</dt>
+                        <dd class="col-sm-9">@Model.PackageType</dd>
+
+                        <dt class="col-sm-3">Toplam Fiyat</dt>
+                        <dd class="col-sm-9">@Model.TotalPrice.ToString("C")</dd>
+
+                        <dt class="col-sm-3">Durum</dt>
+                        <dd class="col-sm-9">
+                            @switch (Model.Status)
+                            {
+                                case "Confirmed":
+                                    <span class="badge badge-success">Onaylandı</span>
+                                    break;
+                                case "Pending":
+                                    <span class="badge badge-warning">Beklemede</span>
+                                    break;
+                                case "Cancelled":
+                                    <span class="badge badge-danger">İptal Edildi</span>
+                                    break;
+                                case "Completed":
+                                    <span class="badge badge-info">Tamamlandı</span>
+                                    break;
+                                default:
+                                    <span class="badge badge-secondary">@Model.Status</span>
+                                    break;
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> İptal
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

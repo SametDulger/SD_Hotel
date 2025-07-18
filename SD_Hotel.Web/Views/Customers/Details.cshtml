@@ -1,0 +1,62 @@
+@model SD_Hotel.Application.DTOs.CustomerDto
+
+@{
+    ViewData["Title"] = "Müşteri Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Müşteri Detayları</h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Ad Soyad:</dt>
+                                <dd class="col-sm-8">@Model.FirstName @Model.LastName</dd>
+
+                                <dt class="col-sm-4">E-posta:</dt>
+                                <dd class="col-sm-8">@Model.Email</dd>
+
+                                <dt class="col-sm-4">Telefon:</dt>
+                                <dd class="col-sm-8">@Model.Phone</dd>
+
+                                <dt class="col-sm-4">TC Kimlik No:</dt>
+                                <dd class="col-sm-8">@Model.IdentityNumber</dd>
+
+                                <dt class="col-sm-4">Doğum Tarihi:</dt>
+                                <dd class="col-sm-8">@(Model.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Belirtilmemiş")</dd>
+
+                                <dt class="col-sm-4">Adres:</dt>
+                                <dd class="col-sm-8">@Model.Address</dd>
+
+                                <dt class="col-sm-4">Sadakat Üyesi:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsLoyaltyMember)
+                                    {
+                                        <span class="badge bg-success text-white">Evet (@Model.LoyaltyPoints puan)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary text-white">Hayır</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

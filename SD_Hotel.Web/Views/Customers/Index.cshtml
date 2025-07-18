@@ -1,0 +1,70 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.CustomerDto>
+
+@{
+    ViewData["Title"] = "Müşteriler";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Müşteri Listesi</h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Müşteri Ekle
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>E-posta</th>
+                                <th>Telefon</th>
+                                <th>TC Kimlik No</th>
+                                <th>Doğum Tarihi</th>
+                                <th>Sadakat Üyesi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.FirstName @item.LastName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Phone</td>
+                                    <td>@item.IdentityNumber</td>
+                                    <td>@(item.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Belirtilmemiş")</td>
+                                    <td>
+                                        @if (item.IsLoyaltyMember)
+                                        {
+                                            <span class="badge bg-success text-white">Evet (@item.LoyaltyPoints puan)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary text-white">Hayır</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,92 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.RoomDto>
+
+@{
+    ViewData["Title"] = "Müsait Odalar";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Müsait Odalar</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <form method="get" class="form-inline">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Giriş Tarihi:</label>
+                                        <input type="date" name="checkIn" class="form-control" value="@ViewBag.CheckIn?.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label">Çıkış Tarihi:</label>
+                                        <input type="date" name="checkOut" class="form-control" value="@ViewBag.CheckOut?.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label">Oda Tipi:</label>
+                                        <select name="roomType" class="form-control">
+                                            <option value="">Tüm Tipler</option>
+                                            <option value="Single" selected="@(ViewBag.RoomType == "Single")">Tek Kişilik</option>
+                                            <option value="Double" selected="@(ViewBag.RoomType == "Double")">Çift Kişilik</option>
+                                            <option value="Triple" selected="@(ViewBag.RoomType == "Triple")">Üç Kişilik</option>
+                                            <option value="Suite" selected="@(ViewBag.RoomType == "Suite")">Suit</option>
+                                            <option value="King" selected="@(ViewBag.RoomType == "King")">Kral Dairesi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-primary mt-4">
+                                            <i class="fas fa-search"></i> Ara
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    @if (Model.Any())
+                    {
+                        <div class="row">
+                            @foreach (var room in Model)
+                            {
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Oda @room.RoomNumber</h5>
+                                            <p class="card-text">
+                                                <strong>Tip:</strong> @room.RoomType<br>
+                                                <strong>Kat:</strong> @room.Floor<br>
+                                                <strong>Kapasite:</strong> @room.Capacity kişi<br>
+                                                <strong>Fiyat:</strong> @room.BasePrice.ToString("C")/gece
+                                            </p>
+                                            @if (!string.IsNullOrEmpty(room.Description))
+                                            {
+                                                <p class="card-text"><small class="text-muted">@room.Description</small></p>
+                                            }
+                                        </div>
+                                        <div class="card-footer">
+                                            <a asp-controller="Reservations" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-success btn-sm">
+                                                <i class="fas fa-calendar-plus"></i> Rezervasyon Yap
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@room.Id" class="btn btn-info btn-sm">
+                                                <i class="fas fa-eye"></i> Detaylar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <h4>Müsait oda bulunamadı</h4>
+                            <p>Seçilen tarih aralığında ve kriterlerde müsait oda bulunmamaktadır.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

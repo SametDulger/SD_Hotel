@@ -1,0 +1,102 @@
+@model SD_Hotel.Application.DTOs.CreateRoomDto
+
+@{
+    ViewData["Title"] = "Yeni Oda Ekle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Yeni Oda Ekle</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="RoomNumber" class="control-label">Oda Numarası</label>
+                                    <input asp-for="RoomNumber" class="form-control" />
+                                    <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Floor" class="control-label">Kat</label>
+                                    <input asp-for="Floor" class="form-control" />
+                                    <span asp-validation-for="Floor" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="RoomType" class="control-label">Oda Tipi</label>
+                                    <select asp-for="RoomType" class="form-control">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Single">Tek Kişilik</option>
+                                        <option value="Double">Çift Kişilik</option>
+                                        <option value="Triple">Üç Kişilik</option>
+                                        <option value="Suite">Suit</option>
+                                        <option value="King">Kral Dairesi</option>
+                                    </select>
+                                    <span asp-validation-for="RoomType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Capacity" class="control-label">Kapasite</label>
+                                    <input asp-for="Capacity" class="form-control" />
+                                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="BasePrice" class="control-label">Temel Fiyat</label>
+                                    <input asp-for="BasePrice" class="form-control" />
+                                    <span asp-validation-for="BasePrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsAvailable" class="control-label">Müsait</label>
+                                    <div class="form-check">
+                                        <input asp-for="IsAvailable" class="form-check-input" />
+                                        <label asp-for="IsAvailable" class="form-check-label">Evet</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsUnderMaintenance" class="control-label">Bakımda</label>
+                                    <div class="form-check">
+                                        <input asp-for="IsUnderMaintenance" class="form-check-input" />
+                                        <label asp-for="IsUnderMaintenance" class="form-check-label">Evet</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

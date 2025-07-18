@@ -1,0 +1,103 @@
+@model SD_Hotel.Application.DTOs.CreateExtraExpenseDto
+
+@{
+    ViewData["Title"] = "Yeni Ek Gider Ekle";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Yeni Ek Gider Ekle</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label">Açıklama</label>
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Amount" class="control-label">Tutar</label>
+                                    <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ExpenseType" class="control-label">Gider Tipi</label>
+                                    <select asp-for="ExpenseType" class="form-control">
+                                        <option value="">Tip Seçiniz</option>
+                                        <option value="Bar">Bar</option>
+                                        <option value="RoomService">Oda Servisi</option>
+                                        <option value="Spa">Spa</option>
+                                        <option value="Restaurant">Restoran</option>
+                                        <option value="Laundry">Çamaşırhane</option>
+                                        <option value="Other">Diğer</option>
+                                    </select>
+                                    <span asp-validation-for="ExpenseType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ExpenseDate" class="control-label">Gider Tarihi</label>
+                                    <input asp-for="ExpenseDate" class="form-control" type="date" />
+                                    <span asp-validation-for="ExpenseDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CustomerId" class="control-label">Müşteri ID</label>
+                                    <input asp-for="CustomerId" class="form-control" type="number" />
+                                    <span asp-validation-for="CustomerId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ReservationId" class="control-label">Rezervasyon ID (Opsiyonel)</label>
+                                    <input asp-for="ReservationId" class="form-control" type="number" />
+                                    <span asp-validation-for="ReservationId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsPaid" class="control-label">Ödendi</label>
+                                    <div class="form-check">
+                                        <input asp-for="IsPaid" class="form-check-input" />
+                                        <label asp-for="IsPaid" class="form-check-label">Evet</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PaymentDate" class="control-label">Ödeme Tarihi</label>
+                                    <input asp-for="PaymentDate" class="form-control" type="date" />
+                                    <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

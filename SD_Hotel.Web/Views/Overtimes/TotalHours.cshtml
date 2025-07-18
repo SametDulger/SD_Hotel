@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "Toplam Mesai Saati";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-clock me-2"></i>Toplam Mesai Saati
+                    </h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Kontrol Sonucu</h5>
+                                    <dl class="row">
+                                        <dt class="col-sm-4">Personel ID:</dt>
+                                        <dd class="col-sm-8">@ViewBag.EmployeeId</dd>
+                                        
+                                        <dt class="col-sm-4">Başlangıç Tarihi:</dt>
+                                        <dd class="col-sm-8">@ViewBag.StartDate.ToString("dd/MM/yyyy")</dd>
+                                        
+                                        <dt class="col-sm-4">Bitiş Tarihi:</dt>
+                                        <dd class="col-sm-8">@ViewBag.EndDate.ToString("dd/MM/yyyy")</dd>
+                                        
+                                        <dt class="col-sm-4">Toplam Saat:</dt>
+                                        <dd class="col-sm-8">
+                                            <span class="badge badge-warning">@ViewBag.TotalHours saat</span>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Yeni Kontrol</h5>
+                                    <form asp-action="TotalHours" method="get">
+                                        <div class="form-group">
+                                            <label class="control-label">Personel ID</label>
+                                            <input type="number" name="employeeId" class="form-control" value="@ViewBag.EmployeeId" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Başlangıç Tarihi</label>
+                                            <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate.ToString("yyyy-MM-dd")" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Bitiş Tarihi</label>
+                                            <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate.ToString("yyyy-MM-dd")" required />
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search me-2"></i>Kontrol Et
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Hızlı İşlemler</h5>
+                                    <div class="btn-group">
+                                        <a asp-action="Index" class="btn btn-outline-primary">
+                                            <i class="fas fa-list me-2"></i>Tüm Mesailer
+                                        </a>
+                                        <a asp-action="PendingApprovals" class="btn btn-outline-warning">
+                                            <i class="fas fa-clock me-2"></i>Onay Bekleyenler
+                                        </a>
+                                        <a asp-controller="Shifts" asp-action="Index" class="btn btn-outline-info">
+                                            <i class="fas fa-clock me-2"></i>Vardiyalar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

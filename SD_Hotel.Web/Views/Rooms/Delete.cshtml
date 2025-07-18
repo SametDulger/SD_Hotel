@@ -1,0 +1,73 @@
+@model SD_Hotel.Application.DTOs.RoomDto
+
+@{
+    ViewData["Title"] = "Oda Sil";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Oda Silme Onayı
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Dikkat!</h5>
+                        <p>Bu odayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Oda Numarası:</dt>
+                                <dd class="col-sm-8">@Model.RoomNumber</dd>
+
+                                <dt class="col-sm-4">Kat:</dt>
+                                <dd class="col-sm-8">@Model.Floor</dd>
+
+                                <dt class="col-sm-4">Oda Tipi:</dt>
+                                <dd class="col-sm-8">@Model.RoomType</dd>
+
+                                <dt class="col-sm-4">Kapasite:</dt>
+                                <dd class="col-sm-8">@Model.Capacity kişi</dd>
+
+                                <dt class="col-sm-4">Temel Fiyat:</dt>
+                                <dd class="col-sm-8">@Model.BasePrice.ToString("C")</dd>
+
+                                <dt class="col-sm-4">Durum:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsUnderMaintenance)
+                                    {
+                                        <span class="badge bg-warning text-dark">Bakımda</span>
+                                    }
+                                    else if (Model.IsAvailable)
+                                    {
+                                        <span class="badge bg-success text-white">Müsait</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">Dolu</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> İptal
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

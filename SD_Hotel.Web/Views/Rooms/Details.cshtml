@@ -1,0 +1,100 @@
+@model SD_Hotel.Application.DTOs.RoomDto
+
+@{
+    ViewData["Title"] = "Oda Detayları";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Oda Detayları</h3>
+                    <div class="card-tools">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Oda Numarası:</dt>
+                                <dd class="col-sm-8">@Model.RoomNumber</dd>
+
+                                <dt class="col-sm-4">Kat:</dt>
+                                <dd class="col-sm-8">@Model.Floor</dd>
+
+                                <dt class="col-sm-4">Oda Tipi:</dt>
+                                <dd class="col-sm-8">@Model.RoomType</dd>
+
+                                <dt class="col-sm-4">Kapasite:</dt>
+                                <dd class="col-sm-8">@Model.Capacity kişi</dd>
+
+                                <dt class="col-sm-4">Temel Fiyat:</dt>
+                                <dd class="col-sm-8">@Model.BasePrice.ToString("C")</dd>
+
+                                <dt class="col-sm-4">Durum:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsUnderMaintenance)
+                                    {
+                                        <span class="badge bg-warning text-dark">Bakımda</span>
+                                    }
+                                    else if (Model.IsAvailable)
+                                    {
+                                        <span class="badge bg-success text-white">Müsait</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white">Dolu</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Açıklama:</dt>
+                                <dd class="col-sm-8">@Model.Description</dd>
+
+                                <dt class="col-sm-4">Oluşturulma Tarihi:</dt>
+                                <dd class="col-sm-8">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                                @if (Model.UpdatedDate.HasValue)
+                                {
+                                    <dt class="col-sm-4">Güncellenme Tarihi:</dt>
+                                    <dd class="col-sm-8">@Model.UpdatedDate.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                                }
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Oda Bilgileri</h5>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <i class="fas fa-bed text-primary me-2"></i>
+                                    <strong>Oda Numarası:</strong> @Model.RoomNumber
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-building text-info me-2"></i>
+                                    <strong>Kat:</strong> @Model.Floor
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-tag text-success me-2"></i>
+                                    <strong>Tip:</strong> @Model.RoomType
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-users text-warning me-2"></i>
+                                    <strong>Kapasite:</strong> @Model.Capacity kişi
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-money-bill text-danger me-2"></i>
+                                    <strong>Fiyat:</strong> @Model.BasePrice.ToString("C")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

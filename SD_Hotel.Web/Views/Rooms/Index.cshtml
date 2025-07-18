@@ -1,0 +1,74 @@
+@model IEnumerable<SD_Hotel.Application.DTOs.RoomDto>
+
+@{
+    ViewData["Title"] = "Odalar";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Oda Listesi</h3>
+                    <div class="card-tools">
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Yeni Oda Ekle
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Oda No</th>
+                                <th>Kat</th>
+                                <th>Tip</th>
+                                <th>Kapasite</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.RoomNumber</td>
+                                    <td>@item.Floor</td>
+                                    <td>@item.RoomType</td>
+                                    <td>@item.Capacity</td>
+                                    <td>@item.BasePrice.ToString("C")</td>
+                                    <td>
+                                        @if (item.IsUnderMaintenance)
+                                        {
+                                            <span class="badge bg-warning text-dark">Bakımda</span>
+                                        }
+                                        else if (item.IsAvailable)
+                                        {
+                                            <span class="badge bg-success text-white">Müsait</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger text-white">Dolu</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
