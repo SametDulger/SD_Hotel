@@ -39,6 +39,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<ShiftDto>> Create(CreateShiftDto createShiftDto)
         {
             var shift = await _shiftService.CreateAsync(createShiftDto);
+            if (shift == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = shift.Id }, shift);
         }
 

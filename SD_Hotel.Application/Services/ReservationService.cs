@@ -19,7 +19,7 @@ namespace SD_Hotel.Application.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task<ReservationDto> GetByIdAsync(int id)
+        public async Task<ReservationDto?> GetByIdAsync(int id)
         {
             var reservation = await _reservationRepository.GetReservationWithDetailsAsync(id);
             if (reservation == null) return null;
@@ -65,7 +65,7 @@ namespace SD_Hotel.Application.Services
             });
         }
 
-        public async Task<ReservationDto> CreateAsync(CreateReservationDto createReservationDto)
+        public async Task<ReservationDto?> CreateAsync(CreateReservationDto createReservationDto)
         {
             var totalPrice = await CalculateTotalPriceAsync(
                 createReservationDto.RoomId,
@@ -91,7 +91,7 @@ namespace SD_Hotel.Application.Services
             return await GetByIdAsync(createdReservation.Id);
         }
 
-        public async Task<ReservationDto> UpdateAsync(UpdateReservationDto updateReservationDto)
+        public async Task<ReservationDto?> UpdateAsync(UpdateReservationDto updateReservationDto)
         {
             var reservation = await _reservationRepository.GetByIdAsync(updateReservationDto.Id);
             if (reservation == null) return null;

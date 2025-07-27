@@ -39,6 +39,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<RoomDto>> Create(CreateRoomDto createRoomDto)
         {
             var room = await _roomService.CreateAsync(createRoomDto);
+            if (room == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = room.Id }, room);
         }
 
@@ -66,7 +68,7 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<IEnumerable<RoomDto>>> GetAvailableRooms(
             [FromQuery] DateTime checkIn, 
             [FromQuery] DateTime checkOut, 
-            [FromQuery] string roomType = null)
+            [FromQuery] string? roomType = null)
         {
             var rooms = await _roomService.GetAvailableRoomsAsync(checkIn, checkOut, roomType);
             return Ok(rooms);

@@ -11,9 +11,9 @@ namespace SD_Hotel.Core.Entities
         public decimal HoursWorked { get; set; }
         public ShiftType ShiftType { get; set; }
         public bool IsCompleted { get; set; } = false;
-        public string Notes { get; set; }
+        public string Notes { get; set; } = string.Empty;
         
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; } = null!;
     }
 
     public enum ShiftType

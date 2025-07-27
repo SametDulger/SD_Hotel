@@ -15,7 +15,7 @@ namespace SD_Hotel.Application.Services
             _customerRepository = customerRepository;
         }
 
-        public async Task<CustomerDto> GetByIdAsync(int id)
+        public async Task<CustomerDto?> GetByIdAsync(int id)
         {
             var customer = await _customerRepository.GetByIdAsync(id);
             if (customer == null) return null;
@@ -55,7 +55,7 @@ namespace SD_Hotel.Application.Services
             });
         }
 
-        public async Task<CustomerDto> CreateAsync(CreateCustomerDto createCustomerDto)
+        public async Task<CustomerDto?> CreateAsync(CreateCustomerDto createCustomerDto)
         {
             var customer = new Core.Entities.Customer
             {
@@ -73,7 +73,7 @@ namespace SD_Hotel.Application.Services
             return await GetByIdAsync(createdCustomer.Id);
         }
 
-        public async Task<CustomerDto> UpdateAsync(UpdateCustomerDto updateCustomerDto)
+        public async Task<CustomerDto?> UpdateAsync(UpdateCustomerDto updateCustomerDto)
         {
             var customer = await _customerRepository.GetByIdAsync(updateCustomerDto.Id);
             if (customer == null) return null;
@@ -98,7 +98,7 @@ namespace SD_Hotel.Application.Services
             await _customerRepository.DeleteAsync(id);
         }
 
-        public async Task<CustomerDto> GetByEmailAsync(string email)
+        public async Task<CustomerDto?> GetByEmailAsync(string email)
         {
             var customer = await _customerRepository.GetCustomerByEmailAsync(email);
             if (customer == null) return null;
@@ -119,7 +119,7 @@ namespace SD_Hotel.Application.Services
             };
         }
 
-        public async Task<CustomerDto> GetByIdentityNumberAsync(string identityNumber)
+        public async Task<CustomerDto?> GetByIdentityNumberAsync(string identityNumber)
         {
             var customer = await _customerRepository.GetCustomerByIdentityNumberAsync(identityNumber);
             if (customer == null) return null;

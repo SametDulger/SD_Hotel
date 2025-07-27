@@ -17,7 +17,7 @@ namespace SD_Hotel.Application.Services
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<EmployeeDto> GetByIdAsync(int id)
+        public async Task<EmployeeDto?> GetByIdAsync(int id)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);
             if (employee == null) return null;
@@ -59,7 +59,7 @@ namespace SD_Hotel.Application.Services
             });
         }
 
-        public async Task<EmployeeDto> CreateAsync(CreateEmployeeDto createEmployeeDto)
+        public async Task<EmployeeDto?> CreateAsync(CreateEmployeeDto createEmployeeDto)
         {
             var employee = new Employee
             {
@@ -79,7 +79,7 @@ namespace SD_Hotel.Application.Services
             return await GetByIdAsync(createdEmployee.Id);
         }
 
-        public async Task<EmployeeDto> UpdateAsync(UpdateEmployeeDto updateEmployeeDto)
+        public async Task<EmployeeDto?> UpdateAsync(UpdateEmployeeDto updateEmployeeDto)
         {
             var employee = await _employeeRepository.GetByIdAsync(updateEmployeeDto.Id);
             if (employee == null) return null;
@@ -126,7 +126,7 @@ namespace SD_Hotel.Application.Services
             });
         }
 
-        public async Task<EmployeeDto> GetByIdentityNumberAsync(string identityNumber)
+        public async Task<EmployeeDto?> GetByIdentityNumberAsync(string identityNumber)
         {
             var employee = await _employeeRepository.GetEmployeeByIdentityNumberAsync(identityNumber);
             if (employee == null) return null;

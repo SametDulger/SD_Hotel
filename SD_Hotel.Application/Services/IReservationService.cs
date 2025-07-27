@@ -7,10 +7,10 @@ namespace SD_Hotel.Application.Services
 {
     public interface IReservationService
     {
-        Task<ReservationDto> GetByIdAsync(int id);
+        Task<ReservationDto?> GetByIdAsync(int id);
         Task<IEnumerable<ReservationDto>> GetAllAsync();
-        Task<ReservationDto> CreateAsync(CreateReservationDto createReservationDto);
-        Task<ReservationDto> UpdateAsync(UpdateReservationDto updateReservationDto);
+        Task<ReservationDto?> CreateAsync(CreateReservationDto createReservationDto);
+        Task<ReservationDto?> UpdateAsync(UpdateReservationDto updateReservationDto);
         Task DeleteAsync(int id);
         Task<IEnumerable<ReservationDto>> GetByCustomerAsync(int customerId);
         Task<IEnumerable<ReservationDto>> GetByRoomAsync(int roomId);

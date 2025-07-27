@@ -24,13 +24,13 @@ namespace SD_Hotel.Application.Services
             return expenses.Select(MapToDto);
         }
 
-        public async Task<ExtraExpenseDto> GetByIdAsync(int id)
+        public async Task<ExtraExpenseDto?> GetByIdAsync(int id)
         {
             var expense = await _extraExpenseRepository.GetByIdAsync(id);
             return expense != null ? MapToDto(expense) : null;
         }
 
-        public async Task<ExtraExpenseDto> CreateAsync(CreateExtraExpenseDto createExtraExpenseDto)
+        public async Task<ExtraExpenseDto?> CreateAsync(CreateExtraExpenseDto createExtraExpenseDto)
         {
             if (Enum.TryParse<ExpenseType>(createExtraExpenseDto.ExpenseType, out var expenseTypeEnum))
             {
@@ -54,7 +54,7 @@ namespace SD_Hotel.Application.Services
             throw new ArgumentException("Invalid expense type");
         }
 
-        public async Task<ExtraExpenseDto> UpdateAsync(UpdateExtraExpenseDto updateExtraExpenseDto)
+        public async Task<ExtraExpenseDto?> UpdateAsync(UpdateExtraExpenseDto updateExtraExpenseDto)
         {
             var expense = await _extraExpenseRepository.GetByIdAsync(updateExtraExpenseDto.Id);
             if (expense == null)

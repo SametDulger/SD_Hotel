@@ -6,14 +6,14 @@ namespace SD_Hotel.Application.DTOs
     {
         public int Id { get; set; }
         public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; }
+        public string EmployeeName { get; set; } = string.Empty;
         public DateTime OvertimeDate { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public decimal HoursWorked { get; set; }
         public decimal HourlyRate { get; set; }
         public decimal TotalPay { get; set; }
-        public string Reason { get; set; }
+        public string Reason { get; set; } = string.Empty;
         public bool IsApproved { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -26,17 +26,20 @@ namespace SD_Hotel.Application.DTOs
         public DateTime OvertimeDate { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public string Reason { get; set; }
+        public string Reason { get; set; } = string.Empty;
     }
 
     public class UpdateOvertimeDto
     {
         public int Id { get; set; }
         public int EmployeeId { get; set; }
+        public string EmployeeName { get; set; } = string.Empty;
         public DateTime OvertimeDate { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public string Reason { get; set; }
+        public decimal HourlyRate { get; set; }
+        public decimal TotalPay { get; set; }
+        public string Reason { get; set; } = string.Empty;
         public bool IsApproved { get; set; }
         public bool IsActive { get; set; }
     }

@@ -11,7 +11,7 @@ namespace SD_Hotel.Core.Repositories
         Task<IEnumerable<Reservation>> GetReservationsByRoomAsync(int roomId);
         Task<IEnumerable<Reservation>> GetReservationsByDateRangeAsync(DateTime startDate, DateTime endDate);
         Task<IEnumerable<Reservation>> GetReservationsByStatusAsync(ReservationStatus status);
-        Task<Reservation> GetReservationWithDetailsAsync(int id);
+        Task<Reservation?> GetReservationWithDetailsAsync(int id);
         Task<bool> HasConflictingReservationAsync(int roomId, DateTime checkIn, DateTime checkOut, int? excludeReservationId = null);
         Task<IEnumerable<Reservation>> GetTodayCheckInsAsync();
         Task<IEnumerable<Reservation>> GetTodayCheckOutsAsync();

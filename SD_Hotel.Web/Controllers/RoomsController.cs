@@ -10,19 +10,20 @@ namespace SD_Hotel.Web.Controllers
 {
     public class RoomsController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiBaseUrl = "http://localhost:5158/api";
 
-        public RoomsController(HttpClient httpClient)
+        public RoomsController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var rooms = await _httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var rooms = await httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms");
                 return View(rooms ?? new List<RoomDto>());
             }
             catch
@@ -35,7 +36,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var room = await _httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var room = await httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
                 if (room == null)
                     return NotFound();
 
@@ -60,7 +62,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/rooms", createRoomDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/rooms", createRoomDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -78,7 +81,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var room = await _httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var room = await httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
                 if (room == null)
                     return NotFound();
 
@@ -114,7 +118,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/rooms/{id}", updateRoomDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PutAsJsonAsync($"{_apiBaseUrl}/rooms/{id}", updateRoomDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -132,7 +137,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var room = await _httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var room = await httpClient.GetFromJsonAsync<RoomDto>($"{_apiBaseUrl}/rooms/{id}");
                 if (room == null)
                     return NotFound();
 
@@ -150,7 +156,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/rooms/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var response = await httpClient.DeleteAsync($"{_apiBaseUrl}/rooms/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -163,7 +170,7 @@ namespace SD_Hotel.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> AvailableRooms(DateTime? checkIn, DateTime? checkOut, string roomType = null)
+        public async Task<IActionResult> AvailableRooms(DateTime? checkIn, DateTime? checkOut, string? roomType = null)
         {
             if (!checkIn.HasValue || !checkOut.HasValue)
             {
@@ -173,13 +180,14 @@ namespace SD_Hotel.Web.Controllers
 
             try
             {
+                var httpClient = _httpClientFactory.CreateClient("API");
                 var queryParams = $"checkIn={checkIn:yyyy-MM-dd}&checkOut={checkOut:yyyy-MM-dd}";
                 if (!string.IsNullOrEmpty(roomType))
                 {
                     queryParams += $"&roomType={roomType}";
                 }
 
-                var rooms = await _httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/available?{queryParams}");
+                var rooms = await httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/available?{queryParams}");
                 ViewBag.CheckIn = checkIn;
                 ViewBag.CheckOut = checkOut;
                 ViewBag.RoomType = roomType;
@@ -198,7 +206,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var rooms = await _httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/maintenance");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var rooms = await httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/maintenance");
                 return View(rooms ?? new List<RoomDto>());
             }
             catch
@@ -211,7 +220,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var rooms = await _httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/type/{roomType}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var rooms = await httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/type/{roomType}");
                 ViewBag.RoomType = roomType;
                 return View("Index", rooms ?? new List<RoomDto>());
             }
@@ -226,7 +236,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var rooms = await _httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/floor/{floor}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var rooms = await httpClient.GetFromJsonAsync<List<RoomDto>>($"{_apiBaseUrl}/rooms/floor/{floor}");
                 ViewBag.Floor = floor;
                 return View("Index", rooms ?? new List<RoomDto>());
             }
@@ -241,7 +252,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var isAvailable = await _httpClient.GetFromJsonAsync<bool>($"{_apiBaseUrl}/rooms/{id}/available?checkIn={checkIn:yyyy-MM-dd}&checkOut={checkOut:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var isAvailable = await httpClient.GetFromJsonAsync<bool>($"{_apiBaseUrl}/rooms/{id}/available?checkIn={checkIn:yyyy-MM-dd}&checkOut={checkOut:yyyy-MM-dd}");
                 ViewBag.RoomId = id;
                 ViewBag.CheckIn = checkIn;
                 ViewBag.CheckOut = checkOut;
