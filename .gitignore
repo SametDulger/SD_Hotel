@@ -1,32 +1,40 @@
-[Bb]in/
-[Oo]bj/
+# Build results
 [Dd]ebug/
+[Dd]ebugPublic/
 [Rr]elease/
+[Rr]eleases/
 x64/
 x86/
+[Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
+[Bb]in/
+[Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
+# Visual Studio files
 .vs/
 *.user
-*.suo
 *.userosscache
 *.sln.docstates
-*.rsuser
 *.userprefs
+*.suo
+*.rsuser
+*.sln.iml
 
+# Visual Studio Code
 .vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# JetBrains Rider
 .idea/
-*.sln.iml
 
+# Temporary files
 *.tmp
 *.temp
 *.tmp_proj
@@ -39,6 +47,7 @@ bld/
 *.svclog
 *.scc
 
+# NuGet packages
 *.nupkg
 *.snupkg
 **/[Pp]ackages/*
@@ -46,14 +55,17 @@ bld/
 *.nuget.props
 *.nuget.targets
 
+# Mono auto generated files
 mono_crash.*
 
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
 
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -72,37 +84,44 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Linux
 *~
 .fuse_hidden*
 .directory
 .Trash-*
 .nfs*
 
+# Environment files
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# Application settings
 appsettings.Development.json
 appsettings.Production.json
+appsettings.Staging.json
 
+# Database files
 *.mdf
 *.ldf
 *.ndf
-
 *.db
 *.db-shm
 *.db-wal
 
+# Publishing
 *.pubxml
 *.publishproj
 *.azurePubxml
 
+# Build artifacts
 *.binlog
 *.cache
 *.dll.refresh
 
+# Test results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 *.coverage
@@ -111,14 +130,73 @@ coverage*.json
 coverage*.xml
 coverage*.info
 
+# Temporary directories
 tmp/
 temp/
 
+# Runtime configuration
 *.runtimeconfig.json
 *.runtimeconfig.dev.json
 
+# Swagger files
 swagger.json
 swagger.yaml
 
+# Logs
 logs/
-*.log 
+*.log
+
+# Entity Framework migrations
+Migrations/
+**/Migrations/
+*.Designer.cs
+*.Designer.vb
+*.resx
+*.Designer.resx
+*.Designer.vb.resx
+
+# Connection strings with sensitive data
+appsettings.*.json
+!appsettings.json
+
+# Backup files
+*.bak
+*.backup
+
+# IDE specific files
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Web.config transforms
+*.Debug.config
+*.Release.config
+*.Staging.config
+
+# Local development settings
+local.settings.json
+local.settings.*.json
+
+# Performance profiling
+*.diagsession
+*.diagsession-*
+
+# Test results
+TestResults/
+*.trx
+
+# Benchmark results
+BenchmarkDotNet.Artifacts/
+
+# Profiling
+*.vsp
+*.vspx
+*.sap 

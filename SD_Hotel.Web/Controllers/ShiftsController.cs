@@ -10,19 +10,20 @@ namespace SD_Hotel.Web.Controllers
 {
     public class ShiftsController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiBaseUrl = "http://localhost:5158/api";
 
-        public ShiftsController(HttpClient httpClient)
+        public ShiftsController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var shifts = await _httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shifts = await httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts");
                 return View(shifts ?? new List<ShiftDto>());
             }
             catch
@@ -35,7 +36,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shift = await _httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shift = await httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
                 if (shift == null)
                     return NotFound();
 
@@ -51,14 +53,15 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View();
         }
 
@@ -70,7 +73,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/shifts", createShiftDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/shifts", createShiftDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -81,17 +85,18 @@ namespace SD_Hotel.Web.Controllers
                     ModelState.AddModelError("", "Vardiya oluşturulurken bir hata oluştu.");
                 }
             }
-            
+
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View(createShiftDto);
         }
 
@@ -99,24 +104,26 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shift = await _httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shift = await httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
                 if (shift == null)
                     return NotFound();
 
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                ViewBag.Employees = employees ?? new List<EmployeeDto>();
 
                 var updateDto = new UpdateShiftDto
                 {
                     Id = shift.Id,
                     EmployeeId = shift.EmployeeId,
+                    EmployeeName = shift.EmployeeName,
                     ShiftDate = shift.ShiftDate,
                     StartTime = shift.StartTime,
                     EndTime = shift.EndTime,
                     ShiftType = shift.ShiftType,
-                    IsActive = shift.IsActive
+                    IsCompleted = shift.IsCompleted,
+                    Notes = shift.Notes
                 };
-
-                ViewBag.Employees = employees ?? new List<EmployeeDto>();
 
                 return View(updateDto);
             }
@@ -137,7 +144,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/shifts/{id}", updateShiftDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PutAsJsonAsync($"{_apiBaseUrl}/shifts/{id}", updateShiftDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -148,17 +156,18 @@ namespace SD_Hotel.Web.Controllers
                     ModelState.AddModelError("", "Vardiya güncellenirken bir hata oluştu.");
                 }
             }
-            
+
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View(updateShiftDto);
         }
 
@@ -166,7 +175,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shift = await _httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shift = await httpClient.GetFromJsonAsync<ShiftDto>($"{_apiBaseUrl}/shifts/{id}");
                 if (shift == null)
                     return NotFound();
 
@@ -184,7 +194,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/shifts/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var response = await httpClient.DeleteAsync($"{_apiBaseUrl}/shifts/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -201,15 +212,14 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shifts = await _httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/employee/{employeeId}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shifts = await httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/employee/{employeeId}");
                 ViewBag.EmployeeId = employeeId;
-                ViewBag.Title = $"Personel ID: {employeeId} Vardiyaları";
                 return View("Index", shifts ?? new List<ShiftDto>());
             }
             catch
             {
                 ViewBag.EmployeeId = employeeId;
-                ViewBag.Title = $"Personel ID: {employeeId} Vardiyaları";
                 return View("Index", new List<ShiftDto>());
             }
         }
@@ -218,17 +228,16 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shifts = await _httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/date-range?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shifts = await httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/date-range?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;
-                ViewBag.Title = $"Tarih Aralığı: {startDate:dd/MM/yyyy} - {endDate:dd/MM/yyyy}";
                 return View("Index", shifts ?? new List<ShiftDto>());
             }
             catch
             {
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;
-                ViewBag.Title = $"Tarih Aralığı: {startDate:dd/MM/yyyy} - {endDate:dd/MM/yyyy}";
                 return View("Index", new List<ShiftDto>());
             }
         }
@@ -237,15 +246,14 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shifts = await _httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/type/{shiftType}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shifts = await httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/type/{shiftType}");
                 ViewBag.ShiftType = shiftType;
-                ViewBag.Title = $"Vardiya Tipi: {shiftType}";
                 return View("Index", shifts ?? new List<ShiftDto>());
             }
             catch
             {
                 ViewBag.ShiftType = shiftType;
-                ViewBag.Title = $"Vardiya Tipi: {shiftType}";
                 return View("Index", new List<ShiftDto>());
             }
         }
@@ -254,7 +262,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var shifts = await _httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/active");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var shifts = await httpClient.GetFromJsonAsync<List<ShiftDto>>($"{_apiBaseUrl}/shifts/active");
                 ViewBag.Title = "Aktif Vardiyalar";
                 return View("Index", shifts ?? new List<ShiftDto>());
             }
@@ -269,7 +278,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var totalHours = await _httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/shifts/total-hours?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var totalHours = await httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/shifts/total-hours?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 ViewBag.EmployeeId = employeeId;
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;

@@ -14,12 +14,12 @@ namespace SD_Hotel.Infrastructure.Repositories
         {
         }
 
-        public async Task<Customer> GetCustomerByEmailAsync(string email)
+        public async Task<Customer?> GetCustomerByEmailAsync(string email)
         {
             return await _dbSet.FirstOrDefaultAsync(c => c.Email == email && c.IsActive);
         }
 
-        public async Task<Customer> GetCustomerByIdentityNumberAsync(string identityNumber)
+        public async Task<Customer?> GetCustomerByIdentityNumberAsync(string identityNumber)
         {
             return await _dbSet.FirstOrDefaultAsync(c => c.IdentityNumber == identityNumber && c.IsActive);
         }
@@ -31,7 +31,7 @@ namespace SD_Hotel.Infrastructure.Repositories
                               .ToListAsync();
         }
 
-        public async Task<Customer> GetCustomerWithReservationsAsync(int id)
+        public async Task<Customer?> GetCustomerWithReservationsAsync(int id)
         {
             return await _dbSet.Where(c => c.Id == id && c.IsActive)
                               .Include(c => c.Reservations)

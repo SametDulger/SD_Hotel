@@ -38,6 +38,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<EmployeeDto>> Create(CreateEmployeeDto createEmployeeDto)
         {
             var employee = await _employeeService.CreateAsync(createEmployeeDto);
+            if (employee == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employee);
         }
 

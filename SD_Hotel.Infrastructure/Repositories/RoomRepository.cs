@@ -45,7 +45,7 @@ namespace SD_Hotel.Infrastructure.Repositories
             return await _dbSet.Where(r => r.Floor == floor && r.IsActive).ToListAsync();
         }
 
-        public async Task<Room> GetRoomWithImagesAsync(int id)
+        public async Task<Room?> GetRoomWithImagesAsync(int id)
         {
             return await _dbSet.Include(r => r.RoomImages).FirstOrDefaultAsync(r => r.Id == id && r.IsActive);
         }

@@ -32,13 +32,13 @@ namespace SD_Hotel.Application.Services
             return overtimeDtos;
         }
 
-        public async Task<OvertimeDto> GetByIdAsync(int id)
+        public async Task<OvertimeDto?> GetByIdAsync(int id)
         {
             var overtime = await _overtimeRepository.GetByIdAsync(id);
             return overtime != null ? await MapToDto(overtime) : null;
         }
 
-        public async Task<OvertimeDto> CreateAsync(CreateOvertimeDto createOvertimeDto)
+        public async Task<OvertimeDto?> CreateAsync(CreateOvertimeDto createOvertimeDto)
         {
             var employee = await _employeeRepository.GetByIdAsync(createOvertimeDto.EmployeeId);
             if (employee == null)
@@ -66,7 +66,7 @@ namespace SD_Hotel.Application.Services
             return await MapToDto(overtime);
         }
 
-        public async Task<OvertimeDto> UpdateAsync(UpdateOvertimeDto updateOvertimeDto)
+        public async Task<OvertimeDto?> UpdateAsync(UpdateOvertimeDto updateOvertimeDto)
         {
             var overtime = await _overtimeRepository.GetByIdAsync(updateOvertimeDto.Id);
             if (overtime == null)

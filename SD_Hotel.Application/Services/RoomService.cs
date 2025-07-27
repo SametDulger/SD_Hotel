@@ -17,7 +17,7 @@ namespace SD_Hotel.Application.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task<RoomDto> GetByIdAsync(int id)
+        public async Task<RoomDto?> GetByIdAsync(int id)
         {
             var room = await _roomRepository.GetRoomWithImagesAsync(id);
             if (room == null) return null;
@@ -54,7 +54,7 @@ namespace SD_Hotel.Application.Services
             });
         }
 
-        public async Task<RoomDto> CreateAsync(CreateRoomDto createRoomDto)
+        public async Task<RoomDto?> CreateAsync(CreateRoomDto createRoomDto)
         {
             var room = new Room
             {
@@ -70,7 +70,7 @@ namespace SD_Hotel.Application.Services
             return await GetByIdAsync(createdRoom.Id);
         }
 
-        public async Task<RoomDto> UpdateAsync(UpdateRoomDto updateRoomDto)
+        public async Task<RoomDto?> UpdateAsync(UpdateRoomDto updateRoomDto)
         {
             var room = await _roomRepository.GetByIdAsync(updateRoomDto.Id);
             if (room == null) return null;
@@ -93,7 +93,7 @@ namespace SD_Hotel.Application.Services
             await _roomRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(DateTime checkIn, DateTime checkOut, string roomType = null)
+        public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(DateTime checkIn, DateTime checkOut, string? roomType = null)
         {
             RoomType? roomTypeEnum = null;
             if (!string.IsNullOrEmpty(roomType))

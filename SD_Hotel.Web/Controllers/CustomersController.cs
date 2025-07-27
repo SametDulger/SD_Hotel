@@ -9,19 +9,20 @@ namespace SD_Hotel.Web.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiBaseUrl = "http://localhost:5158/api";
 
-        public CustomersController(HttpClient httpClient)
+        public CustomersController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var customers = await _httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customers = await httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers");
                 return View(customers ?? new List<CustomerDto>());
             }
             catch
@@ -34,7 +35,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customer = await _httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customer = await httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
                 if (customer == null)
                     return NotFound();
 
@@ -59,7 +61,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/customers", createCustomerDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/customers", createCustomerDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -77,7 +80,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customer = await _httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customer = await httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
                 if (customer == null)
                     return NotFound();
 
@@ -113,7 +117,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/customers/{id}", updateCustomerDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PutAsJsonAsync($"{_apiBaseUrl}/customers/{id}", updateCustomerDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -131,7 +136,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customer = await _httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customer = await httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/{id}");
                 if (customer == null)
                     return NotFound();
 
@@ -149,7 +155,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/customers/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var response = await httpClient.DeleteAsync($"{_apiBaseUrl}/customers/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -166,18 +173,16 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customer = await _httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/email/{email}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customer = await httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/email/{email}");
                 if (customer == null)
-                {
-                    ViewBag.Message = "Bu e-posta adresi ile müşteri bulunamadı.";
-                    return View("Index", new List<CustomerDto>());
-                }
+                    return NotFound();
+
                 return View("Details", customer);
             }
             catch
             {
-                ViewBag.Message = "Bu e-posta adresi ile müşteri bulunamadı.";
-                return View("Index", new List<CustomerDto>());
+                return NotFound();
             }
         }
 
@@ -185,18 +190,16 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customer = await _httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/identity/{identityNumber}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customer = await httpClient.GetFromJsonAsync<CustomerDto>($"{_apiBaseUrl}/customers/identity/{identityNumber}");
                 if (customer == null)
-                {
-                    ViewBag.Message = "Bu kimlik numarası ile müşteri bulunamadı.";
-                    return View("Index", new List<CustomerDto>());
-                }
+                    return NotFound();
+
                 return View("Details", customer);
             }
             catch
             {
-                ViewBag.Message = "Bu kimlik numarası ile müşteri bulunamadı.";
-                return View("Index", new List<CustomerDto>());
+                return NotFound();
             }
         }
 
@@ -204,14 +207,13 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customers = await _httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers/loyalty");
-                ViewBag.Title = "Sadakat Üyeleri";
-                return View("Index", customers ?? new List<CustomerDto>());
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customers = await httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers/loyalty");
+                return View(customers ?? new List<CustomerDto>());
             }
             catch
             {
-                ViewBag.Title = "Sadakat Üyeleri";
-                return View("Index", new List<CustomerDto>());
+                return View(new List<CustomerDto>());
             }
         }
 
@@ -219,15 +221,14 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var customers = await _httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers/search?searchTerm={searchTerm}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var customers = await httpClient.GetFromJsonAsync<List<CustomerDto>>($"{_apiBaseUrl}/customers/search?searchTerm={searchTerm}");
                 ViewBag.SearchTerm = searchTerm;
-                ViewBag.Title = $"Arama Sonuçları: {searchTerm}";
                 return View("Index", customers ?? new List<CustomerDto>());
             }
             catch
             {
                 ViewBag.SearchTerm = searchTerm;
-                ViewBag.Title = $"Arama Sonuçları: {searchTerm}";
                 return View("Index", new List<CustomerDto>());
             }
         }

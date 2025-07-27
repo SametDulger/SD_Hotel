@@ -51,7 +51,7 @@ namespace SD_Hotel.Infrastructure.Repositories
                               .ToListAsync();
         }
 
-        public async Task<Reservation> GetReservationWithDetailsAsync(int id)
+        public async Task<Reservation?> GetReservationWithDetailsAsync(int id)
         {
             return await _dbSet.Where(r => r.Id == id && r.IsActive)
                               .Include(r => r.Customer)

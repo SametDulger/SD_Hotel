@@ -39,6 +39,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<OvertimeDto>> Create(CreateOvertimeDto createOvertimeDto)
         {
             var overtime = await _overtimeService.CreateAsync(createOvertimeDto);
+            if (overtime == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = overtime.Id }, overtime);
         }
 

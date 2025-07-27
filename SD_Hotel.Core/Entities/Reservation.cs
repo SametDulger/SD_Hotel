@@ -12,13 +12,13 @@ namespace SD_Hotel.Core.Entities
         public PackageType PackageType { get; set; }
         public decimal TotalPrice { get; set; }
         public ReservationStatus Status { get; set; }
-        public string SpecialRequests { get; set; }
+        public string SpecialRequests { get; set; } = string.Empty;
         public DateTime? ConfirmationDate { get; set; }
         public bool IsEarlyReservation { get; set; } = false;
         public decimal? EarlyReservationDiscount { get; set; }
         
-        public virtual Customer Customer { get; set; }
-        public virtual Room Room { get; set; }
+        public virtual Customer Customer { get; set; } = null!;
+        public virtual Room Room { get; set; } = null!;
     }
 
     public enum PackageType

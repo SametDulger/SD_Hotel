@@ -39,6 +39,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<ExtraExpenseDto>> Create(CreateExtraExpenseDto createExtraExpenseDto)
         {
             var expense = await _extraExpenseService.CreateAsync(createExtraExpenseDto);
+            if (expense == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = expense.Id }, expense);
         }
 

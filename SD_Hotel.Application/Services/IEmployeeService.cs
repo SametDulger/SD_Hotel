@@ -6,13 +6,13 @@ namespace SD_Hotel.Application.Services
 {
     public interface IEmployeeService
     {
-        Task<EmployeeDto> GetByIdAsync(int id);
+        Task<EmployeeDto?> GetByIdAsync(int id);
         Task<IEnumerable<EmployeeDto>> GetAllAsync();
-        Task<EmployeeDto> CreateAsync(CreateEmployeeDto createEmployeeDto);
-        Task<EmployeeDto> UpdateAsync(UpdateEmployeeDto updateEmployeeDto);
+        Task<EmployeeDto?> CreateAsync(CreateEmployeeDto createEmployeeDto);
+        Task<EmployeeDto?> UpdateAsync(UpdateEmployeeDto updateEmployeeDto);
         Task DeleteAsync(int id);
         Task<IEnumerable<EmployeeDto>> GetByRoleAsync(string role);
-        Task<EmployeeDto> GetByIdentityNumberAsync(string identityNumber);
+        Task<EmployeeDto?> GetByIdentityNumberAsync(string identityNumber);
         Task<IEnumerable<EmployeeDto>> GetActiveEmployeesAsync();
     }
 } 

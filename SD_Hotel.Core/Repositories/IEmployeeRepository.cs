@@ -8,9 +8,9 @@ namespace SD_Hotel.Core.Repositories
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
         Task<IEnumerable<Employee>> GetEmployeesByRoleAsync(EmployeeRole role);
-        Task<Employee> GetEmployeeByIdentityNumberAsync(string identityNumber);
+        Task<Employee?> GetEmployeeByIdentityNumberAsync(string identityNumber);
         Task<IEnumerable<Employee>> GetActiveEmployeesAsync();
-        Task<Employee> GetEmployeeWithShiftsAsync(int id);
+        Task<Employee?> GetEmployeeWithShiftsAsync(int id);
         Task<IEnumerable<Employee>> GetEmployeesByShiftTypeAsync(ShiftType shiftType, DateTime date);
     }
 } 
