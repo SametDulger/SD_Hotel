@@ -6,10 +6,10 @@ namespace SD_Hotel.Core.Repositories
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        Task<Customer> GetCustomerByEmailAsync(string email);
-        Task<Customer> GetCustomerByIdentityNumberAsync(string identityNumber);
+        Task<Customer?> GetCustomerByEmailAsync(string email);
+        Task<Customer?> GetCustomerByIdentityNumberAsync(string identityNumber);
         Task<IEnumerable<Customer>> GetLoyaltyMembersAsync();
-        Task<Customer> GetCustomerWithReservationsAsync(int id);
+        Task<Customer?> GetCustomerWithReservationsAsync(int id);
         Task<IEnumerable<Customer>> SearchCustomersAsync(string searchTerm);
     }
 } 

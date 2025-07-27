@@ -9,19 +9,20 @@ namespace SD_Hotel.Web.Controllers
 {
     public class EmployeesController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiBaseUrl = "http://localhost:5158/api";
 
-        public EmployeesController(HttpClient httpClient)
+        public EmployeesController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 return View(employees ?? new List<EmployeeDto>());
             }
             catch
@@ -34,7 +35,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employee = await _httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employee = await httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
                 if (employee == null)
                     return NotFound();
 
@@ -59,7 +61,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/employees", createEmployeeDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/employees", createEmployeeDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -77,7 +80,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employee = await _httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employee = await httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
                 if (employee == null)
                     return NotFound();
 
@@ -86,14 +90,14 @@ namespace SD_Hotel.Web.Controllers
                     Id = employee.Id,
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
+                    IdentityNumber = employee.IdentityNumber,
                     Email = employee.Email,
                     Phone = employee.Phone,
-                    IdentityNumber = employee.IdentityNumber,
-                    DateOfBirth = employee.DateOfBirth,
-                    HireDate = employee.HireDate,
-                    Role = employee.Role,
-                    Salary = employee.Salary,
                     Address = employee.Address,
+                    Role = employee.Role,
+                    HourlyRate = employee.HourlyRate,
+                    MonthlySalary = employee.MonthlySalary,
+                    HireDate = employee.HireDate,
                     IsActive = employee.IsActive
                 };
 
@@ -116,7 +120,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/employees/{id}", updateEmployeeDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PutAsJsonAsync($"{_apiBaseUrl}/employees/{id}", updateEmployeeDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -134,7 +139,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employee = await _httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employee = await httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/{id}");
                 if (employee == null)
                     return NotFound();
 
@@ -152,7 +158,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/employees/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var response = await httpClient.DeleteAsync($"{_apiBaseUrl}/employees/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -169,15 +176,14 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees/role/{role}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees/role/{role}");
                 ViewBag.Role = role;
-                ViewBag.Title = $"Rol: {role}";
                 return View("Index", employees ?? new List<EmployeeDto>());
             }
             catch
             {
                 ViewBag.Role = role;
-                ViewBag.Title = $"Rol: {role}";
                 return View("Index", new List<EmployeeDto>());
             }
         }
@@ -186,18 +192,16 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employee = await _httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/identity/{identityNumber}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employee = await httpClient.GetFromJsonAsync<EmployeeDto>($"{_apiBaseUrl}/employees/identity/{identityNumber}");
                 if (employee == null)
-                {
-                    ViewBag.Message = "Bu kimlik numarası ile personel bulunamadı.";
-                    return View("Index", new List<EmployeeDto>());
-                }
+                    return NotFound();
+
                 return View("Details", employee);
             }
             catch
             {
-                ViewBag.Message = "Bu kimlik numarası ile personel bulunamadı.";
-                return View("Index", new List<EmployeeDto>());
+                return NotFound();
             }
         }
 
@@ -205,13 +209,12 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees/active");
-                ViewBag.Title = "Aktif Personel";
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees/active");
                 return View("Index", employees ?? new List<EmployeeDto>());
             }
             catch
             {
-                ViewBag.Title = "Aktif Personel";
                 return View("Index", new List<EmployeeDto>());
             }
         }

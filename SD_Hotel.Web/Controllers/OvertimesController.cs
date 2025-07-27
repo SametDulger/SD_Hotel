@@ -10,19 +10,20 @@ namespace SD_Hotel.Web.Controllers
 {
     public class OvertimesController : Controller
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _apiBaseUrl = "http://localhost:5158/api";
 
-        public OvertimesController(HttpClient httpClient)
+        public OvertimesController(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                var overtimes = await _httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtimes = await httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes");
                 return View(overtimes ?? new List<OvertimeDto>());
             }
             catch
@@ -35,7 +36,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtime = await _httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtime = await httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
                 if (overtime == null)
                     return NotFound();
 
@@ -51,14 +53,15 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View();
         }
 
@@ -70,7 +73,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PostAsJsonAsync($"{_apiBaseUrl}/overtimes", createOvertimeDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PostAsJsonAsync($"{_apiBaseUrl}/overtimes", createOvertimeDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -81,17 +85,18 @@ namespace SD_Hotel.Web.Controllers
                     ModelState.AddModelError("", "Mesai oluşturulurken bir hata oluştu.");
                 }
             }
-            
+
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View(createOvertimeDto);
         }
 
@@ -99,25 +104,27 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtime = await _httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtime = await httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
                 if (overtime == null)
                     return NotFound();
 
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                ViewBag.Employees = employees ?? new List<EmployeeDto>();
 
                 var updateDto = new UpdateOvertimeDto
                 {
                     Id = overtime.Id,
                     EmployeeId = overtime.EmployeeId,
+                    EmployeeName = overtime.EmployeeName,
                     OvertimeDate = overtime.OvertimeDate,
                     StartTime = overtime.StartTime,
                     EndTime = overtime.EndTime,
+                    HourlyRate = overtime.HourlyRate,
+                    TotalPay = overtime.TotalPay,
                     Reason = overtime.Reason,
-                    IsApproved = overtime.IsApproved,
-                    IsActive = overtime.IsActive
+                    IsApproved = overtime.IsApproved
                 };
-
-                ViewBag.Employees = employees ?? new List<EmployeeDto>();
 
                 return View(updateDto);
             }
@@ -138,7 +145,8 @@ namespace SD_Hotel.Web.Controllers
             {
                 try
                 {
-                    var response = await _httpClient.PutAsJsonAsync($"{_apiBaseUrl}/overtimes/{id}", updateOvertimeDto);
+                    var httpClient = _httpClientFactory.CreateClient("API");
+                    var response = await httpClient.PutAsJsonAsync($"{_apiBaseUrl}/overtimes/{id}", updateOvertimeDto);
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction(nameof(Index));
@@ -149,17 +157,18 @@ namespace SD_Hotel.Web.Controllers
                     ModelState.AddModelError("", "Mesai güncellenirken bir hata oluştu.");
                 }
             }
-            
+
             try
             {
-                var employees = await _httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var employees = await httpClient.GetFromJsonAsync<List<EmployeeDto>>($"{_apiBaseUrl}/employees");
                 ViewBag.Employees = employees ?? new List<EmployeeDto>();
             }
             catch
             {
                 ViewBag.Employees = new List<EmployeeDto>();
             }
-            
+
             return View(updateOvertimeDto);
         }
 
@@ -167,7 +176,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtime = await _httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtime = await httpClient.GetFromJsonAsync<OvertimeDto>($"{_apiBaseUrl}/overtimes/{id}");
                 if (overtime == null)
                     return NotFound();
 
@@ -185,7 +195,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"{_apiBaseUrl}/overtimes/{id}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var response = await httpClient.DeleteAsync($"{_apiBaseUrl}/overtimes/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -202,15 +213,14 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtimes = await _httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/employee/{employeeId}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtimes = await httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/employee/{employeeId}");
                 ViewBag.EmployeeId = employeeId;
-                ViewBag.Title = $"Personel ID: {employeeId} Mesaileri";
                 return View("Index", overtimes ?? new List<OvertimeDto>());
             }
             catch
             {
                 ViewBag.EmployeeId = employeeId;
-                ViewBag.Title = $"Personel ID: {employeeId} Mesaileri";
                 return View("Index", new List<OvertimeDto>());
             }
         }
@@ -219,17 +229,16 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtimes = await _httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/date-range?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtimes = await httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/date-range?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;
-                ViewBag.Title = $"Tarih Aralığı: {startDate:dd/MM/yyyy} - {endDate:dd/MM/yyyy}";
                 return View("Index", overtimes ?? new List<OvertimeDto>());
             }
             catch
             {
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;
-                ViewBag.Title = $"Tarih Aralığı: {startDate:dd/MM/yyyy} - {endDate:dd/MM/yyyy}";
                 return View("Index", new List<OvertimeDto>());
             }
         }
@@ -238,7 +247,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var overtimes = await _httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/pending-approvals");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var overtimes = await httpClient.GetFromJsonAsync<List<OvertimeDto>>($"{_apiBaseUrl}/overtimes/pending-approvals");
                 ViewBag.Title = "Onay Bekleyen Mesailer";
                 return View("Index", overtimes ?? new List<OvertimeDto>());
             }
@@ -253,7 +263,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var totalHours = await _httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/overtimes/total-hours?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var totalHours = await httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/overtimes/total-hours?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 ViewBag.EmployeeId = employeeId;
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;
@@ -274,7 +285,8 @@ namespace SD_Hotel.Web.Controllers
         {
             try
             {
-                var totalPay = await _httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/overtimes/total-pay?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+                var httpClient = _httpClientFactory.CreateClient("API");
+                var totalPay = await httpClient.GetFromJsonAsync<decimal>($"{_apiBaseUrl}/overtimes/total-pay?employeeId={employeeId}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
                 ViewBag.EmployeeId = employeeId;
                 ViewBag.StartDate = startDate;
                 ViewBag.EndDate = endDate;

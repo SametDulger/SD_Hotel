@@ -33,13 +33,13 @@ namespace SD_Hotel.Application.Services
             return shiftDtos;
         }
 
-        public async Task<ShiftDto> GetByIdAsync(int id)
+        public async Task<ShiftDto?> GetByIdAsync(int id)
         {
             var shift = await _shiftRepository.GetByIdAsync(id);
             return shift != null ? await MapToDto(shift) : null;
         }
 
-        public async Task<ShiftDto> CreateAsync(CreateShiftDto createShiftDto)
+        public async Task<ShiftDto?> CreateAsync(CreateShiftDto createShiftDto)
         {
             if (Enum.TryParse<ShiftType>(createShiftDto.ShiftType, out var shiftTypeEnum))
             {
@@ -63,7 +63,7 @@ namespace SD_Hotel.Application.Services
             throw new ArgumentException("Invalid shift type");
         }
 
-        public async Task<ShiftDto> UpdateAsync(UpdateShiftDto updateShiftDto)
+        public async Task<ShiftDto?> UpdateAsync(UpdateShiftDto updateShiftDto)
         {
             var shift = await _shiftRepository.GetByIdAsync(updateShiftDto.Id);
             if (shift == null)

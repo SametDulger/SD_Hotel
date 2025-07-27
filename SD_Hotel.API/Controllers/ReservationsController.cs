@@ -39,6 +39,8 @@ namespace SD_Hotel.API.Controllers
         public async Task<ActionResult<ReservationDto>> Create(CreateReservationDto createReservationDto)
         {
             var reservation = await _reservationService.CreateAsync(createReservationDto);
+            if (reservation == null)
+                return BadRequest();
             return CreatedAtAction(nameof(GetById), new { id = reservation.Id }, reservation);
         }
 

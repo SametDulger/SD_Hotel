@@ -23,7 +23,7 @@ namespace SD_Hotel.Infrastructure.Repositories
                               .ToListAsync();
         }
 
-        public async Task<Employee> GetEmployeeByIdentityNumberAsync(string identityNumber)
+        public async Task<Employee?> GetEmployeeByIdentityNumberAsync(string identityNumber)
         {
             return await _dbSet.FirstOrDefaultAsync(e => e.IdentityNumber == identityNumber && e.IsActive);
         }
@@ -36,7 +36,7 @@ namespace SD_Hotel.Infrastructure.Repositories
                               .ToListAsync();
         }
 
-        public async Task<Employee> GetEmployeeWithShiftsAsync(int id)
+        public async Task<Employee?> GetEmployeeWithShiftsAsync(int id)
         {
             return await _dbSet.Where(e => e.Id == id && e.IsActive)
                               .Include(e => e.Shifts)

@@ -6,10 +6,11 @@ namespace SD_Hotel.Application.DTOs
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
         public int? ReservationId { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public decimal Amount { get; set; }
-        public string ExpenseType { get; set; }
+        public string ExpenseType { get; set; } = string.Empty;
         public DateTime ExpenseDate { get; set; }
         public bool IsPaid { get; set; }
         public DateTime? PaymentDate { get; set; }
@@ -21,9 +22,9 @@ namespace SD_Hotel.Application.DTOs
     {
         public int CustomerId { get; set; }
         public int? ReservationId { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public decimal Amount { get; set; }
-        public string ExpenseType { get; set; }
+        public string ExpenseType { get; set; } = string.Empty;
         public DateTime ExpenseDate { get; set; }
         public bool IsPaid { get; set; } = false;
         public DateTime? PaymentDate { get; set; }
@@ -33,10 +34,11 @@ namespace SD_Hotel.Application.DTOs
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
         public int? ReservationId { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public decimal Amount { get; set; }
-        public string ExpenseType { get; set; }
+        public string ExpenseType { get; set; } = string.Empty;
         public DateTime ExpenseDate { get; set; }
         public bool IsPaid { get; set; }
         public DateTime? PaymentDate { get; set; }
